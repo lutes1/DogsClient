@@ -29,10 +29,13 @@ final class HomeViewTests: XCTestCase {
 
 fileprivate extension HomeViewTests {
   class HomeViewModelMock: DogsClient.HomeViewModelProtocol {
-    func loadPlainBreeds() async throws {
+    func load() async throws {
     }
     
-    var breeds: [String] = ["1", "2", "3"]
+    var breeds: [Breed] = [
+      Breed(name: "hound", subBreeds: ["dog"]),
+      Breed(name: "hound2", subBreeds: ["dog", "dog2"])
+    ]
     
     var navigationRoute: DogsClient.HomeNavigationRoute? = nil
   }

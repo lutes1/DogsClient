@@ -21,11 +21,12 @@ final class HomeViewModelTests: XCTestCase {
   
   func testHomeViewModelLoading() async throws {
     // Act
-    try await homeViewModel.loadPlainBreeds()
+    try await homeViewModel.load()
     
     // Assert
     XCTAssert(homeViewModel.breeds.count == 4)
-    XCTAssert(homeViewModel.breeds == ["a", "b", "c", "d"])
+    XCTAssert(homeViewModel.breeds == [Breed(name: "hound", subBreeds: ["dog"]),
+                                       Breed(name: "hound2", subBreeds: ["dog", "dog2"])])
   }
 }
 
@@ -40,7 +41,7 @@ fileprivate extension HomeViewModelTests {
     }
     
     func get<T>(endpoint: DogsClient.Endpoint) async throws -> T where T : Decodable {
-      BreedsListModel(status: "", contents: ["a", "b", "c", "d"]) as! T
+      BreedsListWithSubbreedsModel(status: "", contents: ["hound": ["dog"], "hound2": ["dog", "dog2"]]) as! T
     }
     
     func get(endpoint: DogsClient.Endpoint) async throws -> Data {

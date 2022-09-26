@@ -33,6 +33,8 @@ fileprivate extension UITestingRegisterer {
           return BreedsListModel(status: "", contents: ["1","2","3","4","5"]) as! T
         case .picturesOfBreed:
           return BreedsListModel(status: "", contents: ["0", "0", "0", "0", "0"]) as! T
+        case .allBreedsWithSubbreeds:
+          return BreedsListWithSubbreedsModel(status: "", contents: ["hound": ["dog"], "hound2": ["dog", "dog2"]]) as! T
         default:
           fatalError("You are using the mocked API with an endpoint (\(endpoint)) that is not implemented")
       }
