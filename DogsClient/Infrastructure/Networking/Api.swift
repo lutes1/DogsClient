@@ -19,6 +19,11 @@ class Api: ApiProtocol {
     let model = try JSONDecoder().decode(T.self, from: data)
     return model
   }
+  
+  func get(endpoint: Endpoint) async throws -> Data {
+    let (data, _) = try await networkProvider.data(from: try endpoint.url)
+    return data
+  }
 }
 
 class Constants {

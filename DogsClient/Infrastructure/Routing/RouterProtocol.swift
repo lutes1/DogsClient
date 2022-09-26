@@ -7,30 +7,23 @@
 
 import SwiftUI
 
-protocol RouterProtocol {
+protocol NavigationRouterProtocol {
+  associatedtype NavigationRoute: Route
+  associatedtype NavigationDestination: View
+  @ViewBuilder func destination(for route: NavigationRoute?) -> NavigationDestination
+}
+
+protocol ModalRouterProtocol {
   associatedtype ModalRoute: Route
   associatedtype ModalDestination: View
   
-  associatedtype NavigationRoute: Route
-  associatedtype NavigationDestination: View
-  
-  @ViewBuilder func destination(for route: NavigationRoute?) -> NavigationDestination
   @ViewBuilder func modal(for route: ModalRoute?) -> ModalDestination
-  init()
 }
 
-extension RouterProtocol {
-  func destination(for route: EmptyRoute?) -> EmptyView {
-    EmptyView()
-  }
+
+protocol TabRouterProtocol {
+  associatedtype TabRoute: Route
+  associatedtype TabDestination: View
   
-  func modal(for route: EmptyRoute?) -> EmptyView {
-    EmptyView()
-  }
-}
-
-enum EmptyRoute: Route {
-  var id: String {
-    ""
-  }
+  @ViewBuilder func tab(for route: TabRoute) -> TabDestination
 }

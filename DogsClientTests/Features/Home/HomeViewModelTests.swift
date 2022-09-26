@@ -7,26 +7,19 @@
 
 import XCTest
 import Combine
-import Cuckoo
 
 @testable import DogsClient
 
 final class HomeViewModelTests: XCTestCase {
   private var homeViewModel: HomeViewModel!
-  private var apiMock: MockApiProtocol!
+  private var apiMock: ApiProtocol!
   
   override func setUp() {
-    let networkProvider = MockNetworkProviderProtocol()
-    apiMock = MockApiProtocol(networkProvider: networkProvider)
+    apiMock = ApiMock()
     homeViewModel = HomeViewModel(apiService: apiMock)
   }
   
   func testHomeViewModelLoading() async throws {
-    // Arrange
-    stub(apiMock) { api in
-      api.get(endpoint: Endpoint.allBreeds).thenReturn(ApiModel(status: "", contents: ["a", "b", "c", "d"]))
-    }
-    
     // Act
     try await homeViewModel.loadPlainBreeds()
     
@@ -36,12 +29,22 @@ final class HomeViewModelTests: XCTestCase {
   }
 }
 
-extension Endpoint: Matchable {
-  public typealias MatchedType = Self
-  
-  public var matcher: Cuckoo.ParameterMatcher<MatchedType> {
-    .init { tested in
-      self == tested
+fileprivate extension HomeViewModelTests {
+  class ApiMock: ApiProtocol {
+    convenience init() {
+      let networkProviderMock = mock(NetworkProviderProtocol.self)
+      self.init(networkProvider: networkProviderMock)
+    }
+    
+    required init(networkProvider: NetworkProviderProtocol) {
+    }
+    
+    func get<T>(endpoint: DogsClient.Endpoint) async throws -> T where T : Decodable {
+      BreedsListModel(status: "", contents: ["a", "b", "c", "d"]) as! T
+    }
+    
+    func get(endpoint: DogsClient.Endpoint) async throws -> Data {
+      return Data()
     }
   }
 }
