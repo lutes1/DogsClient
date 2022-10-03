@@ -7,8 +7,7 @@
 
 import Combine
 
-protocol SubbreedsViewModelProtocol: NavigatingViewModelProtocol
-  where NavigationRoute == SubbreedsNavigationRoute {
+protocol SubbreedsViewModelProtocol: ViewModelProtocol {
   init(breed: String, subbreeds: [String])
   
   var breed: String { get }

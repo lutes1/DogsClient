@@ -19,7 +19,7 @@ final class ApiTests: XCTestCase {
     api = Api(networkProvider: networkProviderMock)
   }
   
-  func test() async throws {
+  func testDataIntegrity() async throws {
     // Act
     let result: TestModel = try await api.get(endpoint: Endpoint.allBreeds)
     
@@ -28,7 +28,6 @@ final class ApiTests: XCTestCase {
     XCTAssert(result.prop2 == "string")
     XCTAssert(result.prop3 == [1, 2, 3])
   }
-
 }
 
 fileprivate extension ApiTests {

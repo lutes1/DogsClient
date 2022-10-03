@@ -7,14 +7,12 @@
 
 import SwiftUI
 
-
 struct BreedsTabView<ViewModel: BreedsTabViewModelProtocol, Router: BreedsTabRouterProtocol>: View {
-  @ObservedObject
-  private(set) var viewModel: ViewModel
-  private(set) var router: Router
+  @ObservedObject private(set) var viewModel: ViewModel
+  @ObservedObject private(set) var router: Router
   
   var body: some View {
-    TabView(selection: $viewModel.tabRoute) {
+    TabView(selection: $router.tabRoute) {
       router.tab(for: .all(viewModel.breed))
         .tabItem {
           VStack {
@@ -39,7 +37,6 @@ struct BreedsTabView<ViewModel: BreedsTabViewModelProtocol, Router: BreedsTabRou
 
 struct BreedsTabView_Previews: PreviewProvider {
   static var previews: some View {
-    BreedsTabView(viewModel: BreedsTabViewModel(breed: "hound", subbreeds: ["afghan"]), router: BreedsTabRouter())
+    BreedsTabView(viewModel: BreedsTabViewModel(breed: "hound", subbreeds: ["afghan"]), router: BreedsTabRouter(tabRoute: .all("hound")))
   }
 }
-

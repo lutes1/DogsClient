@@ -24,7 +24,7 @@ final class HomeViewModelTests: XCTestCase {
     try await homeViewModel.load()
     
     // Assert
-    XCTAssert(homeViewModel.breeds.count == 4)
+    XCTAssert(homeViewModel.breeds.count == 2)
     XCTAssert(homeViewModel.breeds == [Breed(name: "hound", subBreeds: ["dog"]),
                                        Breed(name: "hound2", subBreeds: ["dog", "dog2"])])
   }

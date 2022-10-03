@@ -9,35 +9,31 @@ import SwiftUI
 
 struct HomeView<ViewModel: HomeViewModelProtocol, Router: HomeRouterProtocol> : View {
   
-  @ObservedObject
-  private(set) var viewModel: ViewModel
-  
-  private(set) var router: Router
+  @ObservedObject private(set) var viewModel: ViewModel
+  @ObservedObject private(set) var router: Router
   
   var body: some View {
     NavigationView {
-      List {
-        ForEach(viewModel.breeds, id: \.name) { breed in
-          NavigationLink(
-            destination: router.destination(for: viewModel.navigationRoute),
-            tag: .detail(breed.name, breed.subBreeds),
-            selection: $viewModel.navigationRoute,
-            label: {
-              HStack {
-                Text(breed.name)
-                  .font(.callout)
-                  .accessibilityIdentifier("navigationLinkLabel")
-                if !breed.subBreeds.isEmpty {
-                  Spacer()
-                  Circle()
-                    .fill(Color.green.opacity(0.5))
-                    .frame(width: 20)
-                }
+      List(viewModel.breeds, id: \.name) { breed in
+        NavigationLink(
+          destination: router.destination(),
+          tag: .detail(breed.name, breed.subBreeds),
+          selection: $router.navigationRoute,
+          label: {
+            HStack {
+              Text(breed.name)
+                .font(.callout)
+                .accessibilityIdentifier("navigationLinkLabel")
+              if !breed.subBreeds.isEmpty {
+                Spacer()
+                Circle()
+                  .fill(Color.green.opacity(0.5))
+                  .frame(width: 20)
               }
             }
-          )
-          .accessibilityIdentifier("navigationLink")
-        }
+          }
+        )
+        .accessibilityIdentifier("navigationLink")
       }
       .navigationTitle("Breeds")
     }

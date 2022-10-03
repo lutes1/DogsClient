@@ -41,7 +41,8 @@ fileprivate extension HomeViewTests {
   }
   
   class HomeRouterMock: DogsClient.HomeRouterProtocol {
-    func destination(for route: HomeNavigationRoute?) -> EmptyView {
+    @Published var navigationRoute: HomeNavigationRoute?
+    func destination() -> EmptyView {
       EmptyView()
     }
   }

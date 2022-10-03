@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol BreedsTabViewModelProtocol: TabViewModelProtocol where TabRoute == BreedsTabRoute {
+protocol BreedsTabViewModelProtocol: ViewModelProtocol {
   init(breed: String, subbreeds: [String])
   var breed: String { get }
   var subbreeds: [String]  { get }
@@ -20,8 +20,5 @@ class BreedsTabViewModel: BreedsTabViewModelProtocol {
   required init(breed: String, subbreeds: [String]) {
     self.breed = breed
     self.subbreeds = subbreeds
-    self.tabRoute = subbreeds.isEmpty ? .all(breed): .subbreeds(breed, subbreeds)
-  }
-  
-  var tabRoute: BreedsTabRoute
+  }  
 }

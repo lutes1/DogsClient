@@ -9,8 +9,9 @@ import SwiftUI
 
 struct SubbreedsView<ViewModel: SubbreedsViewModelProtocol, Router: SubbreedsRouterProtocol>: View {
   @ObservedObject
-  var viewModel: ViewModel
+  private(set) var viewModel: ViewModel
   
+  @ObservedObject
   private(set) var router: Router
   
   var body: some View {
@@ -22,9 +23,9 @@ struct SubbreedsView<ViewModel: SubbreedsViewModelProtocol, Router: SubbreedsRou
       List(viewModel.subbreeds, id: \.self) { subBreed in
         NavigationLink(
           subBreed,
-          destination: router.destination(for: .photos(viewModel.breed, subBreed)),
+          destination: router.destination(),
           tag: .photos(viewModel.breed, subBreed),
-          selection: $viewModel.navigationRoute)
+          selection: $router.navigationRoute)
       }
     }
   }

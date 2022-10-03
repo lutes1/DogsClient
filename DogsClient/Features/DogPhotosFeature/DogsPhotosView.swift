@@ -9,28 +9,27 @@ import SwiftUI
 
 struct DogsPhotosView<ViewModel: DogsPhotosViewModelProtocol, Router: DogsPhotosRouterProtocol> : View {
   @ObservedObject var viewModel: ViewModel
+  @ObservedObject var router: Router
   @State var task: Task<Void, Never>?
-  let router: Router
   
   var body: some View {
     List(viewModel.images, id: \.self) { image in
-      Button {
-        viewModel.modalRoute = .detail(image)
-      } label: {
-        Image(uiImage: image)
-          .resizable()
-          .scaledToFit()
-      }
-      .accessibilityIdentifier("photoButton")
+      Image(uiImage: image)
+        .resizable()
+        .scaledToFit()
+        .accessibilityIdentifier("image")
+        .onTapGesture {
+          router.presentDetail(image)
+        }
     }
-    .sheet(item: $viewModel.modalRoute) { route in
-      router.modal(for: viewModel.modalRoute)
+    .sheet(item: $router.modalRoute) { route in
+      router.modal()
     }
-    .navigationTitle("\(viewModel.subbreed?.capitalized ?? "") \(viewModel.breed.capitalized)")
+    .navigationTitle(viewModel.title)
     .onAppear {
       task = Task {
         do {
-          try await viewModel.loadPictures()
+          try await viewModel.load()
         }
         catch {
           print(error)
@@ -45,6 +44,6 @@ struct DogsPhotosView<ViewModel: DogsPhotosViewModelProtocol, Router: DogsPhotos
 
 struct DogsPhotosView_Previews: PreviewProvider {
   static var previews: some View {
-    DogsPhotosView(viewModel: DogsPhotosViewModel(breed: "hound", apiService: Api(networkProvider: URLSession.shared)), router: DogsPhotosRouter())
+    DogsPhotosView(viewModel: DogsPhotosViewModel(breed: "hound", apiService: Api(networkProvider: URLSession.shared), dispatcher: Dispatcher()), router: DogsPhotosRouter())
   }
 }

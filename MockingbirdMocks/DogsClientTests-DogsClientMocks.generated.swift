@@ -18,6 +18,50 @@ import UIKit
 
 private let mkbGenericStaticMockContext = Mockingbird.GenericStaticMockContext()
 
+// MARK: - Mocked DispatcherProtocol
+public final class DispatcherProtocolMock: DogsClient.DispatcherProtocol, Mockingbird.Mock {
+  typealias MockingbirdSupertype = DogsClient.DispatcherProtocol
+  public static let mockingbirdContext = Mockingbird.Context()
+  public let mockingbirdContext = Mockingbird.Context(["generator_version": "0.20.0", "module_name": "DogsClient"])
+
+  fileprivate init(sourceLocation: Mockingbird.SourceLocation) {
+    self.mockingbirdContext.sourceLocation = sourceLocation
+    DispatcherProtocolMock.mockingbirdContext.sourceLocation = sourceLocation
+  }
+
+  // MARK: Mocked `main`(_ `action`: @escaping () -> ())
+  public func `main`(_ `action`: @escaping () -> ()) -> Void {
+    return self.mockingbirdContext.mocking.didInvoke(Mockingbird.SwiftInvocation(selectorName: "`main`(_ `action`: @escaping () -> ()) -> Void", selectorType: Mockingbird.SelectorType.method, arguments: [Mockingbird.ArgumentMatcher(`action`)], returnType: Swift.ObjectIdentifier((Void).self))) {
+      self.mockingbirdContext.recordInvocation($0)
+      let mkbImpl = self.mockingbirdContext.stubbing.implementation(for: $0)
+      if let mkbImpl = mkbImpl as? (@escaping () -> ()) -> Void { return mkbImpl(`action`) }
+      if let mkbImpl = mkbImpl as? () -> Void { return mkbImpl() }
+      for mkbTargetBox in self.mockingbirdContext.proxy.targets(for: $0) {
+        switch mkbTargetBox.target {
+        case .super:
+          break
+        case .object(let mkbObject):
+          guard var mkbObject = mkbObject as? MockingbirdSupertype else { break }
+          let mkbValue: Void = mkbObject.`main`(`action`)
+          self.mockingbirdContext.proxy.updateTarget(&mkbObject, in: mkbTargetBox)
+          return mkbValue
+        }
+      }
+      if let mkbValue = self.mockingbirdContext.stubbing.defaultValueProvider.value.provideValue(for: (Void).self) { return mkbValue }
+      self.mockingbirdContext.stubbing.failTest(for: $0, at: self.mockingbirdContext.sourceLocation)
+    }
+  }
+
+  public func `main`(_ `action`: @autoclosure () -> () -> ()) -> Mockingbird.Mockable<Mockingbird.FunctionDeclaration, (@escaping () -> ()) -> Void, Void> {
+    return Mockingbird.Mockable<Mockingbird.FunctionDeclaration, (@escaping () -> ()) -> Void, Void>(context: self.mockingbirdContext, invocation: Mockingbird.SwiftInvocation(selectorName: "`main`(_ `action`: @escaping () -> ()) -> Void", selectorType: Mockingbird.SelectorType.method, arguments: [Mockingbird.resolve(`action`)], returnType: Swift.ObjectIdentifier((Void).self)))
+  }
+}
+
+/// Returns a concrete mock of `DispatcherProtocol`.
+public func mock(_ type: DogsClient.DispatcherProtocol.Protocol, file: StaticString = #file, line: UInt = #line) -> DispatcherProtocolMock {
+  return DispatcherProtocolMock(sourceLocation: Mockingbird.SourceLocation(file, line))
+}
+
 // MARK: - Mocked NetworkProviderProtocol
 public final class NetworkProviderProtocolMock: DogsClient.NetworkProviderProtocol, Mockingbird.Mock {
   typealias MockingbirdSupertype = DogsClient.NetworkProviderProtocol

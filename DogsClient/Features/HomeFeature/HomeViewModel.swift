@@ -7,8 +7,7 @@
 import Foundation
 import Combine
 
-protocol HomeViewModelProtocol: NavigatingViewModelProtocol
-  where NavigationRoute == HomeNavigationRoute {
+protocol HomeViewModelProtocol: ViewModelProtocol {
   func load() async throws
   var breeds: [Breed] { get }
 }
@@ -16,7 +15,6 @@ protocol HomeViewModelProtocol: NavigatingViewModelProtocol
 class HomeViewModel: HomeViewModelProtocol {
   private let apiService: ApiProtocol
   
-  @Published var navigationRoute: HomeNavigationRoute?
   @Published private(set) var breeds: [Breed] = []
   
   init(apiService: ApiProtocol) {
@@ -29,7 +27,7 @@ class HomeViewModel: HomeViewModelProtocol {
       .map { item in
         Breed(name: item.key, subBreeds: item.value)
       }
-    .sorted(by: { $0.name < $1.name })
+      .sorted(by: { $0.name < $1.name })
     
     await MainActor.run {
       self.breeds = breeds

@@ -25,7 +25,6 @@ final class AppFlowsTests: XCTestCase {
     // Tap on the first dog breed item in the list
     navigationButton.tap()
     
-    
     let tabBar = self.app.tabBars.firstMatch
     let allPhotoTabButton = tabBar.buttons.firstMatch
     XCTAssert(allPhotoTabButton.waitForExistence(timeout: 5))
@@ -33,7 +32,7 @@ final class AppFlowsTests: XCTestCase {
     XCTAssert(allPhotoTabButton.isHittable)
     allPhotoTabButton.tap()
     
-    let photoButton = self.app.buttons["photoButton"].firstMatch
+    let photoButton = self.app.images["image"].firstMatch
     XCTAssert(photoButton.waitForExistence(timeout: 5))
     XCTAssert(photoButton.isEnabled)
     XCTAssert(photoButton.isHittable)

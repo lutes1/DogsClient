@@ -13,6 +13,6 @@ class Registerer {
     
     DIContainer.shared.register(AppRouter.self, with: AppRouter.init)
     DIContainer.shared.register(ApiProtocol.self, with: Api.init)
-    DIContainer.shared.register((any HomeViewModelProtocol).self, with: HomeViewModel.init)
+    DIContainer.shared.register(DispatcherProtocol.self, with: Dispatcher.init)
   }
 }
