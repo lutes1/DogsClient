@@ -21,7 +21,14 @@ final class HomeViewModelTests: XCTestCase {
   
   func testHomeViewModelLoading() async throws {
     // Act
-    try await homeViewModel.load()
+    let expectation = expectation(description: "viewModelLoading")
+    homeViewModel.load()
+    
+    try await Task.sleep(nanoseconds: 5 * 1_000_000)
+    
+    expectation.fulfill()
+    
+    await self.waitForExpectations(timeout: 0)
     
     // Assert
     XCTAssert(homeViewModel.breeds.count == 2)
@@ -40,8 +47,11 @@ fileprivate extension HomeViewModelTests {
     required init(networkProvider: NetworkProviderProtocol) {
     }
     
-    func get<T>(endpoint: DogsClient.Endpoint) async throws -> T where T : Decodable {
-      BreedsListWithSubbreedsModel(status: "", contents: ["hound": ["dog"], "hound2": ["dog", "dog2"]]) as! T
+    func get(endpoint: DogsClient.Endpoint) -> AnyPublisher<Data, URLError> {
+      Future { promise in
+        promise(Result.success((try? JSONEncoder().encode(BreedsListWithSubbreedsModel(status: "", contents: ["hound": ["dog"], "hound2": ["dog", "dog2"]])))!))
+      }
+      .eraseToAnyPublisher()
     }
     
     func get(endpoint: DogsClient.Endpoint) async throws -> Data {

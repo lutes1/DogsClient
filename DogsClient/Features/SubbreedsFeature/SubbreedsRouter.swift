@@ -18,7 +18,7 @@ class SubbreedsRouter: SubbreedsRouterProtocol {
     if let route = navigationRoute {
       switch route {
         case .photos(let breed, let subbreed):
-          let breedViewModel = DogsPhotosViewModel(breed: breed, subbreed: subbreed, apiService: DIContainer.shared.resolve(ApiProtocol.self), dispatcher: DIContainer.shared.resolve(DispatcherProtocol.self))
+          let breedViewModel = DogsPhotosViewModel(breed: breed, subbreed: subbreed, apiService: DIContainer.shared.resolve(ApiProtocol.self))
           DogsPhotosView(viewModel: breedViewModel, router: DogsPhotosRouter())
       }
     }

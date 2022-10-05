@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct BreedsListWithSubbreedsModel: Decodable {
+struct BreedsListWithSubbreedsModel: Codable {
   let status: String
   let contents: [String:[String]]
   

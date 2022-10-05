@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import Combine
 
 class UITestingRegisterer: Registerer {
   override func setup() {
@@ -18,37 +19,40 @@ class UITestingRegisterer: Registerer {
 
 fileprivate extension UITestingRegisterer {
   class NetworkProviderMock: NetworkProviderProtocol {
-    func data(from: URL) async throws -> (Data, URLResponse) {
-      (.init(), .init())
+    func dataPublisher(for: URL) -> AnyPublisher<Data, URLError> {
+      Future<Data, URLError> { promise in
+        promise(Result.success(Data()))
+      }
+      .eraseToAnyPublisher()
     }
   }
   
   class ApiMock: ApiProtocol {
     required init(networkProvider: NetworkProviderProtocol) {
     }
-    
-    func get<T>(endpoint: Endpoint) async throws -> T where T : Decodable {
-      switch endpoint {
-        case .allBreeds:
-          return BreedsListModel(status: "", contents: ["1","2","3","4","5"]) as! T
-        case .picturesOfBreed:
-          return BreedsListModel(status: "", contents: ["0", "0", "0", "0", "0"]) as! T
-        case .allBreedsWithSubbreeds:
-          return BreedsListWithSubbreedsModel(status: "", contents: ["hound": ["dog"], "hound2": ["dog", "dog2"]]) as! T
-        default:
-          fatalError("You are using the mocked API with an endpoint (\(endpoint)) that is not implemented")
+
+    func get(endpoint: Endpoint) -> AnyPublisher<Data, URLError> {
+      Future { promise in
+        switch endpoint {
+          case .picture:
+            let image = UIImage(named: "test-image")!
+            let data = image.jpegData(compressionQuality: 1)!
+            promise(Result.success(data))
+          
+          case .allBreeds:
+            promise(Result.success((try? JSONEncoder().encode(BreedsListModel(status: "", contents: ["1","2","3","4","5"])))!))
+          
+          case .picturesOfBreed:
+            promise(Result.success((try? JSONEncoder().encode(BreedsListModel(status: "", contents: ["0", "0", "0", "0", "0"])))!))
+          
+          case .allBreedsWithSubbreeds:
+            promise(Result.success((try? JSONEncoder().encode(BreedsListWithSubbreedsModel(status: "", contents: ["hound": ["dog"], "hound2": ["dog", "dog2"]])))!))
+          
+          default:
+            fatalError("You are using the mocked API with an endpoint (\(endpoint)) that is not implemented")
+        }
       }
-    }
-    
-    func get(endpoint: Endpoint) async throws -> Data {
-      switch endpoint {
-        case .picture:
-          let image = UIImage(named: "test-image")!
-          let data = image.jpegData(compressionQuality: 1)!
-          return data
-        default:
-          fatalError("You are using the mocked API with an endpoint (\(endpoint)) that is not implemented")
-      }
+      .eraseToAnyPublisher()
     }
   }
 }

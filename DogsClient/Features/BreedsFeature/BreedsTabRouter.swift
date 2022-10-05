@@ -30,8 +30,7 @@ class BreedsTabRouter: BreedsTabRouterProtocol {
     let viewModel = DogsPhotosViewModel(
       breed: breed,
       subbreed: nil,
-      apiService: DIContainer.shared.resolve(ApiProtocol.self),
-      dispatcher: DIContainer.shared.resolve(DispatcherProtocol.self)
+      apiService: DIContainer.shared.resolve(ApiProtocol.self)
     )
     
     return DogsPhotosView(viewModel: viewModel, router: DogsPhotosRouter())

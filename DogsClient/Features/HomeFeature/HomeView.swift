@@ -38,13 +38,7 @@ struct HomeView<ViewModel: HomeViewModelProtocol, Router: HomeRouterProtocol> : 
       .navigationTitle("Breeds")
     }
     .onAppear {
-      Task {
-        do {
-          try await viewModel.load()
-        } catch {
-          print(error)
-        }
-      }
+      viewModel.load()
     }
   }
 }

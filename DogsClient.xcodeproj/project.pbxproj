@@ -25,6 +25,7 @@
 		2B43159128E1AD480015879F /* BreedsTabRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B43159028E1AD480015879F /* BreedsTabRoutes.swift */; };
 		2B43159328E1AD630015879F /* SubbreedRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B43159228E1AD630015879F /* SubbreedRoutes.swift */; };
 		2B43159528E1AD8B0015879F /* DogPhotosRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B43159428E1AD8B0015879F /* DogPhotosRoutes.swift */; };
+		2B5ECD8D28EC20EF00FDEAA6 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5ECD8C28EC20EF00FDEAA6 /* Constants.swift */; };
 		2B63E50B28D215EC00E88802 /* NetworkProviderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B63E50A28D215EC00E88802 /* NetworkProviderProtocol.swift */; };
 		2B63E50F28D2186900E88802 /* ApiTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B63E50E28D2186900E88802 /* ApiTests.swift */; };
 		2B63E51128D25EF300E88802 /* ApiIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B63E51028D25EF300E88802 /* ApiIntegrationTests.swift */; };
@@ -106,6 +107,7 @@
 		2B43159028E1AD480015879F /* BreedsTabRoutes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedsTabRoutes.swift; sourceTree = "<group>"; };
 		2B43159228E1AD630015879F /* SubbreedRoutes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubbreedRoutes.swift; sourceTree = "<group>"; };
 		2B43159428E1AD8B0015879F /* DogPhotosRoutes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DogPhotosRoutes.swift; sourceTree = "<group>"; };
+		2B5ECD8C28EC20EF00FDEAA6 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		2B63E50A28D215EC00E88802 /* NetworkProviderProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkProviderProtocol.swift; sourceTree = "<group>"; };
 		2B63E50E28D2186900E88802 /* ApiTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiTests.swift; sourceTree = "<group>"; };
 		2B63E51028D25EF300E88802 /* ApiIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiIntegrationTests.swift; sourceTree = "<group>"; };
@@ -246,6 +248,14 @@
 			path = Application;
 			sourceTree = "<group>";
 		};
+		2B5ECD8E28EC20F400FDEAA6 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				2B5ECD8C28EC20EF00FDEAA6 /* Constants.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
 		2B63E50428D210E100E88802 /* Features */ = {
 			isa = PBXGroup;
 			children = (
@@ -334,6 +344,7 @@
 				2BD8328228EAB4CC008C4079 /* AppUtilities */,
 				2B43157628E1A5BD0015879F /* Features */,
 				2B8F63A128CF5100007D0A95 /* Infrastructure */,
+				2B5ECD8E28EC20F400FDEAA6 /* Utilities */,
 				2B43158728E1AB000015879F /* Models */,
 				2B8F638228CA228F007D0A95 /* DogsClientApp.swift */,
 				2B8F638628CA2291007D0A95 /* Assets.xcassets */,
@@ -666,6 +677,7 @@
 				2B43159328E1AD630015879F /* SubbreedRoutes.swift in Sources */,
 				2B43159128E1AD480015879F /* BreedsTabRoutes.swift in Sources */,
 				2BD8328428EAB4E5008C4079 /* AppRouter.swift in Sources */,
+				2B5ECD8D28EC20EF00FDEAA6 /* Constants.swift in Sources */,
 				2B43157828E1A5F60015879F /* DogsPhotosRouter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

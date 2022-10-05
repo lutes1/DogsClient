@@ -6,9 +6,9 @@
 //
 
 import Foundation
+import Combine
 
 protocol ApiProtocol {
   init(networkProvider: NetworkProviderProtocol)
-  func get<T: Decodable>(endpoint: Endpoint) async throws -> T
-  func get(endpoint: Endpoint) async throws -> Data
+  func get(endpoint: Endpoint) -> AnyPublisher<Data, URLError>
 }

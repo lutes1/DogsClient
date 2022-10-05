@@ -6,7 +6,8 @@
 //
 
 import Foundation
+import Combine
 
 protocol NetworkProviderProtocol {
-  func data(from: URL) async throws -> (Data, URLResponse)
+  func dataPublisher(for: URL) -> AnyPublisher<Data, URLError>
 }

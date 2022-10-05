@@ -6,29 +6,26 @@
 //
 
 import Foundation
+import Combine
 
 class Api: ApiProtocol {
+  let networkProvider: NetworkProviderProtocol
+  
   required init(networkProvider: NetworkProviderProtocol) {
     self.networkProvider = networkProvider
   }
   
-  private let networkProvider: NetworkProviderProtocol
-  
-  func get<T: Decodable>(endpoint: Endpoint) async throws -> T {
-    let (data, _) = try await networkProvider.data(from: try endpoint.url)
-    let model = try JSONDecoder().decode(T.self, from: data)
-    return model
+  func get(endpoint: Endpoint) -> AnyPublisher<Data, URLError> {
+    self.networkProvider.dataPublisher(for: (try? endpoint.url)!)
   }
-  
-  func get(endpoint: Endpoint) async throws -> Data {
-    let (data, _) = try await networkProvider.data(from: try endpoint.url)
-    return data
-  }
-}
-
-class Constants {
-  static let baseUrl = "https://dog.ceo/api/"
 }
 
 extension URLSession: NetworkProviderProtocol {
+  func dataPublisher(for url: URL) -> AnyPublisher<Data, URLError> {
+    self.dataTaskPublisher(for: url)
+      .map {
+        $0.data
+      }
+      .eraseToAnyPublisher()
+  }
 }

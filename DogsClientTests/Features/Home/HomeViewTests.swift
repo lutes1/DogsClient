@@ -29,7 +29,7 @@ final class HomeViewTests: XCTestCase {
 
 fileprivate extension HomeViewTests {
   class HomeViewModelMock: DogsClient.HomeViewModelProtocol {
-    func load() async throws {
+    func load() {
     }
     
     var breeds: [Breed] = [

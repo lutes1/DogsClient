@@ -7,45 +7,37 @@
 
 import UIKit
 import SwiftUI
+import Combine
 
 protocol DogsPhotosViewModelProtocol: ViewModelProtocol {
   var breed: String { get }
   var subbreed: String? { get }
   var images: [UIImage] { get }
   var title: String { get }
-  func load() async throws
-  init(breed: String, subbreed: String?, apiService: ApiProtocol, dispatcher: DispatcherProtocol)
+  func load()
+  init(breed: String, subbreed: String?, apiService: ApiProtocol)
 }
 
 class DogsPhotosViewModel: DogsPhotosViewModelProtocol {
-  private var photosLinks: [String] = []
-  
   private let apiService: ApiProtocol
-  private let dispatcher: DispatcherProtocol
   
   private(set) var breed: String
   private(set) var subbreed: String?
   private(set) var title: String
+  private let api: ApiProtocol
   @Published private(set) var images: [UIImage] = []
+  var cancellables: [AnyCancellable] = []
   
-  required init(breed: String, subbreed: String? = nil, apiService: ApiProtocol, dispatcher: DispatcherProtocol) {
+  required init(breed: String, subbreed: String? = nil, apiService: ApiProtocol) {
     self.breed = breed
     self.subbreed = subbreed
     self.apiService = apiService
-    self.dispatcher = dispatcher
     
     self.title = "\(subbreed?.capitalized ?? "") \(breed.capitalized)"
+    self.api = DIContainer.shared.resolve(ApiProtocol.self)
   }
   
-  func load() async throws {
-    if photosLinks.isEmpty {
-      try await loadPictureLinks()
-    }
-    
-    try await self.loadImages()
-  }
-  
-  private func loadPictureLinks() async throws {
+  func load() {
     let endpoint: Endpoint!
     
     if let subbreed = self.subbreed {
@@ -54,26 +46,35 @@ class DogsPhotosViewModel: DogsPhotosViewModelProtocol {
       endpoint = .picturesOfBreed(self.breed)
     }
     
-    let result: BreedsListModel = try await apiService.get(endpoint: endpoint)
-    
-    photosLinks = result.contents
+    self.api.get(endpoint: endpoint)
+      .decode(type: BreedsListModel.self, decoder: JSONDecoder())
+      .catch { error in
+        print("JSON Error ! - ", error)
+        return Just(BreedsListModel.init(status: "", contents: []))
+      }
+      .sink { [weak self] result in
+        guard let self = self else {
+          return
+        }
+        
+        for link in result.contents {
+          self.loadImage(at: link)
+        }
+      }
+      .store(in: &cancellables)
   }
   
-  private func loadImages() async throws {
-    try await self.loadAndAppendImages(at: Array(photosLinks))
-  }
-  
-  private func loadAndAppendImages(at links: [String]) async throws {
-    for link in links {
-      let data = try await apiService.get(endpoint: .picture(link))
-      
-      guard let image = UIImage(data: data) else {
-        continue
+  private func loadImage(at link: String) {
+    self.api.get(endpoint: .picture(link))
+      .compactMap { data in
+        UIImage(data: data)
       }
-      
-      await dispatcher.main {
-        self.images.append(image)
+      .assertNoFailure()
+      .receive(on: DispatchQueue.main)
+      .sink { result in
+        self.images.append(result)
       }
-    }
+      .store(in: &self.cancellables)
   }
 }
+

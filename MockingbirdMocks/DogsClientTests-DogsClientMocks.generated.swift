@@ -18,48 +18,57 @@ import UIKit
 
 private let mkbGenericStaticMockContext = Mockingbird.GenericStaticMockContext()
 
-// MARK: - Mocked DispatcherProtocol
-public final class DispatcherProtocolMock: DogsClient.DispatcherProtocol, Mockingbird.Mock {
-  typealias MockingbirdSupertype = DogsClient.DispatcherProtocol
+// MARK: - Mocked ApiProtocol
+public final class ApiProtocolMock: DogsClient.ApiProtocol, Mockingbird.Mock {
+  typealias MockingbirdSupertype = DogsClient.ApiProtocol
   public static let mockingbirdContext = Mockingbird.Context()
   public let mockingbirdContext = Mockingbird.Context(["generator_version": "0.20.0", "module_name": "DogsClient"])
 
   fileprivate init(sourceLocation: Mockingbird.SourceLocation) {
     self.mockingbirdContext.sourceLocation = sourceLocation
-    DispatcherProtocolMock.mockingbirdContext.sourceLocation = sourceLocation
+    ApiProtocolMock.mockingbirdContext.sourceLocation = sourceLocation
   }
 
-  // MARK: Mocked `main`(_ `action`: @escaping () -> ())
-  public func `main`(_ `action`: @escaping () -> ()) -> Void {
-    return self.mockingbirdContext.mocking.didInvoke(Mockingbird.SwiftInvocation(selectorName: "`main`(_ `action`: @escaping () -> ()) -> Void", selectorType: Mockingbird.SelectorType.method, arguments: [Mockingbird.ArgumentMatcher(`action`)], returnType: Swift.ObjectIdentifier((Void).self))) {
+  // MARK: Mocked `get`(`endpoint`: DogsClient.Endpoint)
+  public func `get`(`endpoint`: DogsClient.Endpoint) -> AnyPublisher<Data, URLError> {
+    return self.mockingbirdContext.mocking.didInvoke(Mockingbird.SwiftInvocation(selectorName: "`get`(`endpoint`: DogsClient.Endpoint) -> AnyPublisher<Data, URLError>", selectorType: Mockingbird.SelectorType.method, arguments: [Mockingbird.ArgumentMatcher(`endpoint`)], returnType: Swift.ObjectIdentifier((AnyPublisher<Data, URLError>).self))) {
       self.mockingbirdContext.recordInvocation($0)
       let mkbImpl = self.mockingbirdContext.stubbing.implementation(for: $0)
-      if let mkbImpl = mkbImpl as? (@escaping () -> ()) -> Void { return mkbImpl(`action`) }
-      if let mkbImpl = mkbImpl as? () -> Void { return mkbImpl() }
+      if let mkbImpl = mkbImpl as? (DogsClient.Endpoint) -> AnyPublisher<Data, URLError> { return mkbImpl(`endpoint`) }
+      if let mkbImpl = mkbImpl as? () -> AnyPublisher<Data, URLError> { return mkbImpl() }
       for mkbTargetBox in self.mockingbirdContext.proxy.targets(for: $0) {
         switch mkbTargetBox.target {
         case .super:
           break
         case .object(let mkbObject):
           guard var mkbObject = mkbObject as? MockingbirdSupertype else { break }
-          let mkbValue: Void = mkbObject.`main`(`action`)
+          let mkbValue: AnyPublisher<Data, URLError> = mkbObject.`get`(endpoint: `endpoint`)
           self.mockingbirdContext.proxy.updateTarget(&mkbObject, in: mkbTargetBox)
           return mkbValue
         }
       }
-      if let mkbValue = self.mockingbirdContext.stubbing.defaultValueProvider.value.provideValue(for: (Void).self) { return mkbValue }
+      if let mkbValue = self.mockingbirdContext.stubbing.defaultValueProvider.value.provideValue(for: (AnyPublisher<Data, URLError>).self) { return mkbValue }
       self.mockingbirdContext.stubbing.failTest(for: $0, at: self.mockingbirdContext.sourceLocation)
     }
   }
 
-  public func `main`(_ `action`: @autoclosure () -> () -> ()) -> Mockingbird.Mockable<Mockingbird.FunctionDeclaration, (@escaping () -> ()) -> Void, Void> {
-    return Mockingbird.Mockable<Mockingbird.FunctionDeclaration, (@escaping () -> ()) -> Void, Void>(context: self.mockingbirdContext, invocation: Mockingbird.SwiftInvocation(selectorName: "`main`(_ `action`: @escaping () -> ()) -> Void", selectorType: Mockingbird.SelectorType.method, arguments: [Mockingbird.resolve(`action`)], returnType: Swift.ObjectIdentifier((Void).self)))
+  public func `get`(`endpoint`: @autoclosure () -> DogsClient.Endpoint) -> Mockingbird.Mockable<Mockingbird.FunctionDeclaration, (DogsClient.Endpoint) -> AnyPublisher<Data, URLError>, AnyPublisher<Data, URLError>> {
+    return Mockingbird.Mockable<Mockingbird.FunctionDeclaration, (DogsClient.Endpoint) -> AnyPublisher<Data, URLError>, AnyPublisher<Data, URLError>>(context: self.mockingbirdContext, invocation: Mockingbird.SwiftInvocation(selectorName: "`get`(`endpoint`: DogsClient.Endpoint) -> AnyPublisher<Data, URLError>", selectorType: Mockingbird.SelectorType.method, arguments: [Mockingbird.resolve(`endpoint`)], returnType: Swift.ObjectIdentifier((AnyPublisher<Data, URLError>).self)))
+  }
+
+  // MARK: Mocked init(`networkProvider`: DogsClient.NetworkProviderProtocol)
+  public required init(`networkProvider`: DogsClient.NetworkProviderProtocol) {
+    self.mockingbirdContext.mocking.didInvoke(Mockingbird.SwiftInvocation(selectorName: "init(`networkProvider`: DogsClient.NetworkProviderProtocol)", selectorType: Mockingbird.SelectorType.method, arguments: [Mockingbird.ArgumentMatcher(`networkProvider`)], returnType: Swift.ObjectIdentifier((Void).self)))
+  }
+
+  public func initialize(`networkProvider`: @autoclosure () -> DogsClient.NetworkProviderProtocol) -> Mockingbird.Mockable<Mockingbird.FunctionDeclaration, (DogsClient.NetworkProviderProtocol) -> Void, Void> {
+    return Mockingbird.Mockable<Mockingbird.FunctionDeclaration, (DogsClient.NetworkProviderProtocol) -> Void, Void>(context: self.mockingbirdContext, invocation: Mockingbird.SwiftInvocation(selectorName: "init(`networkProvider`: DogsClient.NetworkProviderProtocol)", selectorType: Mockingbird.SelectorType.method, arguments: [Mockingbird.resolve(`networkProvider`)], returnType: Swift.ObjectIdentifier((Void).self)))
   }
 }
 
-/// Returns a concrete mock of `DispatcherProtocol`.
-public func mock(_ type: DogsClient.DispatcherProtocol.Protocol, file: StaticString = #file, line: UInt = #line) -> DispatcherProtocolMock {
-  return DispatcherProtocolMock(sourceLocation: Mockingbird.SourceLocation(file, line))
+/// Returns a concrete mock of `ApiProtocol`.
+public func mock(_ type: DogsClient.ApiProtocol.Protocol, file: StaticString = #file, line: UInt = #line) -> ApiProtocolMock {
+  return ApiProtocolMock(sourceLocation: Mockingbird.SourceLocation(file, line))
 }
 
 // MARK: - Mocked NetworkProviderProtocol
@@ -73,31 +82,31 @@ public final class NetworkProviderProtocolMock: DogsClient.NetworkProviderProtoc
     NetworkProviderProtocolMock.mockingbirdContext.sourceLocation = sourceLocation
   }
 
-  // MARK: Mocked `data`(`from`: URL)
-  public func `data`(`from`: URL) async throws -> (Data, URLResponse) {
-    return try await self.mockingbirdContext.mocking.didInvoke(Mockingbird.SwiftInvocation(selectorName: "`data`(`from`: URL) async throws -> (Data, URLResponse)", selectorType: Mockingbird.SelectorType.method, arguments: [Mockingbird.ArgumentMatcher(`from`)], returnType: Swift.ObjectIdentifier(((Data, URLResponse)).self))) {
+  // MARK: Mocked `dataPublisher`(`for`: URL)
+  public func `dataPublisher`(`for`: URL) -> AnyPublisher<Data, URLError> {
+    return self.mockingbirdContext.mocking.didInvoke(Mockingbird.SwiftInvocation(selectorName: "`dataPublisher`(`for`: URL) -> AnyPublisher<Data, URLError>", selectorType: Mockingbird.SelectorType.method, arguments: [Mockingbird.ArgumentMatcher(`for`)], returnType: Swift.ObjectIdentifier((AnyPublisher<Data, URLError>).self))) {
       self.mockingbirdContext.recordInvocation($0)
       let mkbImpl = self.mockingbirdContext.stubbing.implementation(for: $0)
-      if let mkbImpl = mkbImpl as? (URL) async throws -> (Data, URLResponse) { return try await mkbImpl(`from`) }
-      if let mkbImpl = mkbImpl as? () async throws -> (Data, URLResponse) { return try await mkbImpl() }
+      if let mkbImpl = mkbImpl as? (URL) -> AnyPublisher<Data, URLError> { return mkbImpl(`for`) }
+      if let mkbImpl = mkbImpl as? () -> AnyPublisher<Data, URLError> { return mkbImpl() }
       for mkbTargetBox in self.mockingbirdContext.proxy.targets(for: $0) {
         switch mkbTargetBox.target {
         case .super:
           break
         case .object(let mkbObject):
           guard var mkbObject = mkbObject as? MockingbirdSupertype else { break }
-          let mkbValue: (Data, URLResponse) = try await mkbObject.`data`(from: `from`)
+          let mkbValue: AnyPublisher<Data, URLError> = mkbObject.`dataPublisher`(for: `for`)
           self.mockingbirdContext.proxy.updateTarget(&mkbObject, in: mkbTargetBox)
           return mkbValue
         }
       }
-      if let mkbValue = self.mockingbirdContext.stubbing.defaultValueProvider.value.provideValue(for: ((Data, URLResponse)).self) { return mkbValue }
+      if let mkbValue = self.mockingbirdContext.stubbing.defaultValueProvider.value.provideValue(for: (AnyPublisher<Data, URLError>).self) { return mkbValue }
       self.mockingbirdContext.stubbing.failTest(for: $0, at: self.mockingbirdContext.sourceLocation)
     }
   }
 
-  public func `data`(`from`: @autoclosure () -> URL) async -> Mockingbird.Mockable<Mockingbird.ThrowingAsyncFunctionDeclaration, (URL) async throws -> (Data, URLResponse), (Data, URLResponse)> {
-    return Mockingbird.Mockable<Mockingbird.ThrowingAsyncFunctionDeclaration, (URL) async throws -> (Data, URLResponse), (Data, URLResponse)>(context: self.mockingbirdContext, invocation: Mockingbird.SwiftInvocation(selectorName: "`data`(`from`: URL) async throws -> (Data, URLResponse)", selectorType: Mockingbird.SelectorType.method, arguments: [Mockingbird.resolve(`from`)], returnType: Swift.ObjectIdentifier(((Data, URLResponse)).self)))
+  public func `dataPublisher`(`for`: @autoclosure () -> URL) -> Mockingbird.Mockable<Mockingbird.FunctionDeclaration, (URL) -> AnyPublisher<Data, URLError>, AnyPublisher<Data, URLError>> {
+    return Mockingbird.Mockable<Mockingbird.FunctionDeclaration, (URL) -> AnyPublisher<Data, URLError>, AnyPublisher<Data, URLError>>(context: self.mockingbirdContext, invocation: Mockingbird.SwiftInvocation(selectorName: "`dataPublisher`(`for`: URL) -> AnyPublisher<Data, URLError>", selectorType: Mockingbird.SelectorType.method, arguments: [Mockingbird.resolve(`for`)], returnType: Swift.ObjectIdentifier((AnyPublisher<Data, URLError>).self)))
   }
 }
 

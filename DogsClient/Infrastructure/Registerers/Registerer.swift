@@ -9,7 +9,7 @@ import Foundation
 
 class Registerer {
   func setup() {
-    DIContainer.shared.register(NetworkProviderProtocol.self, as: URLSession.shared )
+    DIContainer.shared.register(NetworkProviderProtocol.self, as: URLSession.shared)
     
     DIContainer.shared.register(AppRouter.self, with: AppRouter.init)
     DIContainer.shared.register(ApiProtocol.self, with: Api.init)

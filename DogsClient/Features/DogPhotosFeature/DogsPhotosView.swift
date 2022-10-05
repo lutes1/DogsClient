@@ -27,23 +27,13 @@ struct DogsPhotosView<ViewModel: DogsPhotosViewModelProtocol, Router: DogsPhotos
     }
     .navigationTitle(viewModel.title)
     .onAppear {
-      task = Task {
-        do {
-          try await viewModel.load()
-        }
-        catch {
-          print(error)
-        }
-      }
-    }
-    .onDisappear {
-      task?.cancel()
+      viewModel.load()
     }
   }
 }
 
 struct DogsPhotosView_Previews: PreviewProvider {
   static var previews: some View {
-    DogsPhotosView(viewModel: DogsPhotosViewModel(breed: "hound", apiService: Api(networkProvider: URLSession.shared), dispatcher: Dispatcher()), router: DogsPhotosRouter())
+    DogsPhotosView(viewModel: DogsPhotosViewModel(breed: "hound", apiService: Api(networkProvider: URLSession.shared)), router: DogsPhotosRouter())
   }
 }

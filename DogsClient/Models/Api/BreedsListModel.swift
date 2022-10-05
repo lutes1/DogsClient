@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct BreedsListModel: Decodable {
+struct BreedsListModel: Codable {
   let status: String
   let contents: [String]
   
